@@ -1,19 +1,34 @@
-const myLibrary = [
+const library = [
   {
     title: 'To kill a mockingbird',
     author: 'Harper Lee',
     pages: '323',
-    read: true
+    read: 'read'
   },
   {
     title: 'Hobbit',
     author: 'John R. R. Tolkien',
     pages: '318',
-    read: false
+    read: 'not read'
   }
 ];
 
-populateDisplay(myLibrary);
+const title = document.querySelector('#title');
+const author = document.querySelector('#author');
+const pages = document.querySelector('#pages');
+const read = document.querySelector('#status');
+
+populateDisplay(library);
+
+const addBtn = document.querySelector('.header button');
+const dialog = document.querySelector("dialog");
+const submitBtn = document.querySelector("#submit")
+
+addBtn.addEventListener('click', () => {
+  dialog.show();
+});
+
+submitBtn.addEventListener('click', getUserData);
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -22,20 +37,34 @@ function Book(title, author, pages, read) {
   this.read = read;
 }
 
-// function addBookToLibrary() {
-//   const title = 'Hobbit';
-//   const author = 'John R. R. Tolkien';
-//   const pages = '318';
-//   const read = true;
-
-//   myLibrary.push(new Book(title, author, pages, read));
-// }
-
-function populateDisplay(library) {
-  library.forEach(populateBookCard);
+function getUserData(event) {
+  event.preventDefault();
+  addBookToLibrary();
+  populateDisplay(library);
+  clearInputs();
+  dialog.close();
 }
 
-function populateBookCard(book) {
+function clearInputs() {
+  title.value = '';
+  author.value = '';
+  pages.value = '';
+  read.value = '';
+}
+
+function addBookToLibrary() {
+  library.push(new Book(title.value, author.value, pages.value, read.value));
+}
+
+function populateDisplay(library) {
+  const cards = document.querySelectorAll('.card');
+
+  for (let i = cards.length; i < library.length; i++) {
+    populateCard(library[i]);
+  }
+}
+
+function populateCard(book) {
   const container = document.querySelector('.container');
 
   const card = document.createElement('div');
