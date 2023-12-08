@@ -2,6 +2,14 @@
 
 :root {
   font-family: 'Nunito', sans-serif;
+
+  --foreground-clr: #f0f9ff;
+  --background-clr: #e0f2fe;
+  --furniture-clr: #0284c7;
+  --main-font-clr: #082f49;
+  --secondary-font-clr: #0c4a6e;
+  --shadow-clr: #075985;
+  --focus-clr: #bae6fd;
 }
 
 *,
@@ -30,6 +38,7 @@ body {
   grid-template-areas:
     'logo    header'
     'sidebar main';
+  color: var(--main-font-clr);
 }
 
 h2 {
@@ -42,6 +51,9 @@ h2 {
   grid-template-columns: 3fr 1fr;
   padding: 16px;
   gap: 32px;
+  background-color: var(--foreground-clr);
+  z-index: 2;
+  box-shadow: 0px 3px 10px var(--shadow-clr);
 }
 
 .header > * {
@@ -53,8 +65,14 @@ h2 {
 .header .searchbar input {
   flex: 1;
   padding: 4px 4px 4px 16px;
-  border: 1px solid black;
+  border: 2px solid var(--main-font-clr);
   border-radius: 1rem;
+  background-color: var(--background-clr);
+}
+
+.header .searchbar input:hover,
+.header .searchbar input:focus {
+  background-color: var(--focus-clr);
 }
 
 .header .profile {
@@ -66,6 +84,8 @@ h2 {
 }
 
 .sidebar > * {
+  background-color: var(--furniture-clr);
+  color: var(--foreground-clr);
   padding: 16px;
   display: flex;
   align-items: center;
@@ -77,9 +97,8 @@ h2 {
 }
 
 .sidebar .new-book {
-  align-self: flex-start;
-  position: sticky;
-  top: 50px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .sidebar .new-book button {
@@ -89,9 +108,12 @@ h2 {
   border: none;
   background-color: transparent;
   gap: 8px;
+  position: sticky;
+  top: 50px;
 }
 
 .sidebar .new-book span.icon {
+  color: var(--foreground-clr);
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -100,13 +122,16 @@ h2 {
   border-radius: 50%;
 }
 
+.sidebar .new-book span.text {
+  color: var(--foreground-clr);
+}
+
 .sidebar .new-book button:hover {
   & span.text {
     text-decoration: underline;
   };
   & span.icon {
-    color: white;
-    background-color: black;
+    background-color: var(--secondary-font-clr);
   };
 }
 
@@ -117,15 +142,19 @@ h2 {
   height: 100vh;
   padding: 16px;
   border: none;
-  border-right: 1px solid black;
+  border-right: 1px solid var(--main-font-clr);
+  background-color: var(--foreground-clr);
+  color: var(--main-font-clr);
+  z-index: 3;
 }
 
 .dialog .close {
   position: absolute;
   top: 16px;
   right: 16px;
-  border: 1px solid black;
-  background-color: white;
+  border: none;
+  background-color: var(--background-clr);
+  color: var(--main-font-clr);
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -135,8 +164,8 @@ h2 {
 }
 
 .dialog .close:hover {
-  background-color: black;
-  color: white;
+  background-color: var(--furniture-clr);
+  color: var(--foreground-clr);
 }
 
 .dialog .form {
@@ -148,22 +177,36 @@ h2 {
 .dialog .form select {
   margin-bottom: 16px;
   padding: 4px 4px 4px 16px;
-  border: 1px solid black;
+  border: 1px solid var(--main-font-clr);
+  background-color: var(--background-clr);
+}
+
+.dialog .form input:hover,
+.dialog .form input:focus,
+.dialog .form select:hover,
+.dialog .form select:focus {
+  background-color: var(--focus-clr);
 }
 
 .dialog .form #submit {
   margin-top: 16px;
-  border: 1px solid black;
-  background-color: white;
+  border: none;
+  background-color: var(--furniture-clr);
+  color: var(--foreground-clr);
   border-radius: 1rem;
   width: 100px;
   padding: 4px 16px;
   align-self: center;
 }
 
+.dialog .form #submit:hover {
+  text-decoration: underline;
+}
+
 .main {
   grid-area: main;
   padding: 16px;
+  background-color: var(--background-clr);
 }
 
 .container {
@@ -176,10 +219,11 @@ h2 {
   display: grid;
   grid-template: repeat(5, 1fr) / 1fr 2fr 1fr;
   gap: 0.6rem;
-  border: 1px solid black;
+  background-color: var(--foreground-clr);
   border-radius: 1rem;
   padding: 1rem;
   align-items: center;
+  box-shadow: 3px 3px 10px var(--shadow-clr);
 }
 
 .container .card p {
@@ -192,6 +236,7 @@ h2 {
 
 .container .card button:first-of-type {
   background-color: transparent;
+  color: var(--furniture-clr);
   border: none;
   width: 40px;
   height: 28px;
@@ -202,9 +247,15 @@ h2 {
 
 .container .card button.delete {
   grid-column: 1 / -1;
-  border: 1px solid black;
+  border: none;
   border-radius: 1rem;
-  background-color: white;
+  background-color: var(--furniture-clr);
+  color: var(--foreground-clr);
+  padding: 4px 16px;
+}
+
+.container .card button.delete:hover {
+  text-decoration: underline;
 }
 
 span.size48 {
