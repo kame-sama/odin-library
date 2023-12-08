@@ -19,8 +19,9 @@ const pages = document.querySelector('#pages');
 const read = document.querySelector('#status');
 
 const newBookButton = document.querySelector('.header button');
-const newBookDialog = document.querySelector("dialog");
-const submitButton = document.querySelector("#submit")
+const newBookDialog = document.querySelector('dialog');
+const submitButton = document.querySelector('#submit');
+const closeDialogButton = document.querySelector('dialog > button');
 
 populateDisplay();
 
@@ -29,6 +30,8 @@ newBookButton.addEventListener('click', () => {
 });
 
 submitButton.addEventListener('click', processUserData);
+
+closeDialogButton.addEventListener('click', closeNewBookDialog);
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -147,5 +150,5 @@ function fixIndexOrder() {
 
   cards.forEach((card, index) => {
     card.setAttribute('data-index', index);
-  })
+  });
 }
