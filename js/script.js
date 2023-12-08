@@ -47,7 +47,11 @@ const newBookDialog = document.querySelector('dialog');
 const submitButton = document.querySelector('#submit');
 const closeDialogButton = document.querySelector('dialog > button');
 
-populateDisplay();
+const search = document.querySelector('#search');
+
+populateDisplay(library);
+
+search.addEventListener('input', performSearch);
 
 newBookButton.addEventListener('click', () => {
   newBookDialog.show();
@@ -68,8 +72,9 @@ function processUserData(event) {
   event.preventDefault();
   if (title.value && author.value && pages.value && read.value) {
     addBookToLibrary();
-    populateDisplay();
+    populateDisplay(library);
     closeNewBookDialog();
+    search.value = '';
   }
 }
 
@@ -85,17 +90,13 @@ function addBookToLibrary() {
   library.push(new Book(title.value, author.value, pages.value, read.value));
 }
 
-function populateDisplay() {
-  const cards = document.querySelectorAll('.card');
-
-  for (let i = cards.length; i < library.length; i++) {
-    populateCard(library[i], i);
-  }
+function populateDisplay(library) {
+  const container = document.querySelector('.container');
+  const cards = library.map(populateCard);
+  container.replaceChildren(...cards);
 }
 
 function populateCard(book, index) {
-  const container = document.querySelector('.container');
-
   const card = document.createElement('div');
   card.classList.toggle('card');
   card.setAttribute('data-index', `${index}`);
@@ -145,11 +146,10 @@ function populateCard(book, index) {
   card.appendChild(statusButton);
   card.appendChild(deleteButton);
 
-  container.appendChild(card);
-
   deleteButton.addEventListener('click', deleteBookFromLibrary);
-
   statusButton.addEventListener('click', changeReadStatus);
+
+  return card;
 }
 
 function changeReadStatus(event) {
@@ -185,4 +185,12 @@ function fixIndexOrder() {
   cards.forEach((card, index) => {
     card.setAttribute('data-index', index);
   });
+}
+
+function performSearch() {
+  const filteredLibrary = library.filter(book => {
+    return book.author.toLowerCase().includes(search.value.toLowerCase())
+    ||book.title.toLowerCase().includes(search.value.toLowerCase());
+  });
+  populateDisplay(filteredLibrary);
 }
