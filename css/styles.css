@@ -129,10 +129,10 @@ h2 {
 .sidebar .new-book button:hover {
   & span.text {
     text-decoration: underline;
-  };
+  }
   & span.icon {
     background-color: var(--secondary-font-clr);
-  };
+  }
 }
 
 .dialog {
@@ -181,6 +181,11 @@ h2 {
   background-color: var(--background-clr);
 }
 
+.dialog .form input.invalid,
+.dialog .form select.invalid {
+  background-color: #fde;
+}
+
 .dialog .form input:hover,
 .dialog .form input:focus,
 .dialog .form select:hover,
@@ -201,6 +206,13 @@ h2 {
 
 .dialog .form #submit:hover {
   text-decoration: underline;
+}
+
+.dialog .form label::after {
+  content: attr(data-after);
+  color: #ff0000;
+  position: relative;
+  left: 1rem;
 }
 
 .main {
@@ -260,13 +272,10 @@ h2 {
 
 span.size48 {
   font-size: 48px;
-  font-variation-settings:
-    'opsz' 48,
-    'wght' 700;
+  font-variation-settings: 'opsz' 48, 'wght' 700;
 }
 
 span.size40 {
   font-size: 40px;
-  font-variation-settings: 
-    'opsz' 40;
+  font-variation-settings: 'opsz' 40;
 }

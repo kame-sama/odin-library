@@ -3,38 +3,38 @@ const library = [
     title: 'To kill a mockingbird',
     author: 'Harper Lee',
     pages: '323',
-    read: 'read'
+    read: 'read',
   },
   {
     title: 'Hobbit',
     author: 'John R. R. Tolkien',
     pages: '318',
-    read: 'not read'
+    read: 'not read',
   },
   {
     title: 'The Stranger',
     author: 'Alber Camus',
     pages: '85',
-    read: 'read'
+    read: 'read',
   },
   {
     title: 'The Plague',
     author: 'Alber Camus',
     pages: '200',
-    read: 'not read'
+    read: 'not read',
   },
   {
     title: 'The Fall',
     author: 'Alber Camus',
     pages: '98',
-    read: 'not read'
+    read: 'not read',
   },
   {
     title: 'The Lord of the Rings',
     author: 'John R. R. Tolkien',
     pages: '860',
-    read: 'read'
-  }
+    read: 'read',
+  },
 ];
 
 const title = document.querySelector('#title');
@@ -58,8 +58,15 @@ newBookButton.addEventListener('click', () => {
 });
 
 submitButton.addEventListener('click', processUserData);
+submitButton.addEventListener('click', checkSubmit);
 
 closeDialogButton.addEventListener('click', closeNewBookDialog);
+
+title.addEventListener('input', checkRequired);
+author.addEventListener('input', checkRequired);
+pages.addEventListener('input', checkRequired);
+pages.addEventListener('input', checkNumber);
+read.addEventListener('input', checkRequired);
 
 class Book {
   constructor(title, author, pages, read) {
@@ -130,11 +137,8 @@ function populateCard(book, index) {
   const statusButton = document.createElement('button');
   const statusIcon = document.createElement('span');
   statusIcon.classList.add('material-symbols-outlined', 'size40');
-  statusIcon.textContent = book.read == 'read' 
-    ? 'toggle_on'
-    : 'toggle_off';
+  statusIcon.textContent = book.read == 'read' ? 'toggle_on' : 'toggle_off';
   statusButton.appendChild(statusIcon);
-
 
   card.appendChild(titleHeading);
   card.appendChild(titleContent);
@@ -155,9 +159,10 @@ function populateCard(book, index) {
 }
 
 function changeReadStatus(event) {
-  const card = event.target.localName == 'span' 
-  ? event.target.parentNode.parentNode
-  : event.target.parentNode;
+  const card =
+    event.target.localName == 'span'
+      ? event.target.parentNode.parentNode
+      : event.target.parentNode;
   const index = card.getAttribute('data-index');
   const status = card.querySelector('p:last-of-type');
 
@@ -190,9 +195,54 @@ function fixIndexOrder() {
 }
 
 function performSearch() {
-  const filteredLibrary = library.filter(book => {
-    return book.author.toLowerCase().includes(search.value.toLowerCase())
-    ||book.title.toLowerCase().includes(search.value.toLowerCase());
+  const filteredLibrary = library.filter((book) => {
+    return (
+      book.author.toLowerCase().includes(search.value.toLowerCase()) ||
+      book.title.toLowerCase().includes(search.value.toLowerCase())
+    );
   });
   populateDisplay(filteredLibrary);
+}
+
+function checkRequired(e) {
+  const id = e.target.id;
+  const label = document.querySelector(`label[for="${id}"]`);
+  if (e.target.validity.valueMissing) {
+    label.setAttribute('data-after', 'This field is required');
+    e.target.classList.add('invalid');
+  } else {
+    label.setAttribute('data-after', '');
+    e.target.classList.remove('invalid');
+  }
+}
+
+function checkNumber() {
+  const label = document.querySelector('label[for="pages"]');
+  if (pages.validity.rangeOverflow) {
+    label.setAttribute('data-after', 'The number is too large (max: 5000)');
+    pages.classList.add('invalid');
+  } else if (pages.validity.rangeUnderflow) {
+    label.setAttribute('data-after', 'The number should be > 0');
+    pages.classList.add('invalid');
+  } else {
+    label.setAttribute('data-after', '');
+    pages.classList.remove('invalid');
+  }
+}
+
+function checkSubmit(e) {
+  e.preventDefault();
+  const ids = ['title', 'author', 'pages', 'status'];
+
+  ids.forEach((id) => {
+    const input = document.querySelector(`#${id}`);
+    const label = document.querySelector(`label[for="${id}"]`);
+    if (input.validity.valueMissing) {
+      label.setAttribute('data-after', 'This field is required');
+      input.classList.add('invalid');
+    } else {
+      label.setAttribute('data-after', '');
+      input.classList.remove('invalid');
+    }
+  });
 }
